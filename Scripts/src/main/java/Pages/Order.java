@@ -102,4 +102,19 @@ public class Order extends PagesBase {
         waitFor().until(ExpectedConditions.elementToBeClickable(backAccountHistory));
         clickElementJS(backAccountHistory);
     }
+
+    // check order without login
+    @FindBy(id = "CheckOrderFrm_order_id")
+    WebElement orderIdBox;
+
+    @FindBy(id = "CheckOrderFrm_email")
+    WebElement emailBox;
+    @FindBy(css = "button[title='Continue']")
+    WebElement continueButton;
+
+    public void checkOrder(String orderId, String email) {
+        setElementText(orderIdBox, orderId);
+        setElementText(emailBox, email);
+        clickElementJS(continueButton);
+    }
 }
