@@ -11,6 +11,7 @@ import java.util.Random;
 public class Home extends PagesBase {
     public Home(WebDriver driver) {
         super(driver);
+        PagesBase.driver = driver;
     }
 
     public List<WebElement> getAllProducts() {
@@ -26,6 +27,6 @@ public class Home extends PagesBase {
         return products.get(randomIndex);
     }
     public String getProductTitle(WebElement productLink) {
-        return Objects.requireNonNull(productLink.getAttribute("title")).toUpperCase();
+        return Objects.requireNonNull(productLink.getAttribute("title"));
     }
 }

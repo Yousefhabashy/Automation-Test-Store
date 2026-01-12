@@ -64,4 +64,7 @@ public class TestData {
     public static String generateCVV() {
         return String.format("%03d", faker.number().numberBetween(0, 999));
     }
+    public static String generateReview() {
+        return faker.lorem().sentence(18);
+    }
 }

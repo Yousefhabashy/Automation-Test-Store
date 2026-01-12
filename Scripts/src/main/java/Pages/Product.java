@@ -19,8 +19,15 @@ public class Product extends PagesBase {
 
     @FindBy(css = "h1.productname")
     WebElement productTitle;
+    public String getProductTitle() {
+        return productTitle.getText();
+    }
     @FindBy(css = "select.form-control ")
     WebElement selectSize;
+
+    public boolean hasSize() {
+        return selectSize.isDisplayed();
+    }
 
     public String chooseSize(String size) {
         Select select = new Select(selectSize);
@@ -104,7 +111,7 @@ public class Product extends PagesBase {
     WebElement reviewBox;
     @FindBy(id = "review_submit")
     WebElement reviewSubmit;
-    public void addReview(int stars , String name , String review) {
+    public void addReview(int stars , String name , String review) throws InterruptedException {
 
         if(stars <= 0) {
             stars = 0;
@@ -115,11 +122,10 @@ public class Product extends PagesBase {
         selectStar(stars);
         setElementText(nameBox, name);
         setElementText(reviewBox, review);
-        System.out.println("Complete the code box and click Enter: ");
-        Scanner scanner = new Scanner(System.in);
-        String x = scanner.nextLine();
+        Thread.sleep(10000);
         clickElementJS(reviewSubmit);
     }
 
-
+    @FindBy(css = "div.alert.alert-success")
+    public WebElement reviewSuccess;
 }
