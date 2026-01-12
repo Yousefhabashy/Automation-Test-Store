@@ -12,8 +12,9 @@ public class HeaderComponents extends PagesBase {
     public HeaderComponents(WebDriver driver) {
         super(driver);
         PagesBase.driver = driver;
+        this.actions = new Actions(driver);
     }
-    Actions actions = new Actions(driver);
+    Actions actions;
 
     // Main Links
     @FindBy(linkText = "Login or register")

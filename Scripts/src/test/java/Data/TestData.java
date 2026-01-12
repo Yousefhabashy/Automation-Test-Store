@@ -32,24 +32,10 @@ public class TestData {
     public static String generateAddress() {
         return faker.address().fullAddress();
     }
-    public static String generateCty() {
+    public static String generateCity() {
         return faker.address().city();
     }
 
-    // select
-    public static String getRandomChoice(WebElement selectElement) {
-        Select select = new Select(selectElement);
-        List<WebElement> options = select.getOptions();
-        options.removeIf( option ->
-                option.getText().trim().isEmpty()
-                || option.getText().toLowerCase().contains("please select")
-        );
-        Random random = new Random();
-        WebElement randomOption = options.get(random.nextInt(options.size()));
-
-        select.selectByVisibleText(randomOption.getText());
-        return randomOption.getText();
-    }
     public static String generatePostalCode() {
         return String.format("%05d", faker.number().numberBetween(0, 999));
     }

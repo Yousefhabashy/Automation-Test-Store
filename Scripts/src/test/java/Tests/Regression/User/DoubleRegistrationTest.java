@@ -2,6 +2,8 @@ package Tests.Regression.User;
 
 import Base.TestBase;
 import Data.TestData;
+import Header.HeaderComponents;
+import Pages.Account;
 import Pages.SignUp;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
@@ -9,9 +11,10 @@ import org.testng.annotations.Test;
 
 import java.util.Objects;
 
-public class SignUpUserTest extends TestBase {
+public class DoubleRegistrationTest extends TestBase {
     Header.HeaderComponents header;
     SignUp signUp;
+    Account account;
 
     String firstName = TestData.generateFirstName();
     String lastName = TestData.generateLastName();
@@ -45,13 +48,49 @@ public class SignUpUserTest extends TestBase {
         );
         country = countryState[0];
         state = countryState[1];
-        System.out.println(country);
-        System.out.println(state);
 
         waitFor().until(ExpectedConditions.urlContains("account/success"));
         Assert.assertTrue(Objects.requireNonNull(driver.getCurrentUrl()).contains("account/success"));
         waitFor().until(ExpectedConditions.visibilityOf(signUp.successMessage));
         Assert.assertEquals(signUp.successMessage.getText().trim(), "YOUR ACCOUNT HAS BEEN CREATED!");
         isLoggedIn = true;
+    }
+
+    @Test(dependsOnMethods = {"signUpUser"})
+    public void logoutUser() {
+
+        header = new HeaderComponents(driver);
+        header.openAccount();
+        waitFor().until(ExpectedConditions.urlContains("account/account"));
+        Assert.assertTrue(Objects.requireNonNull(driver.getCurrentUrl()).contains("account/account"));
+
+        account = new Account(driver);
+        account.logoutUser();
+        waitFor().until(ExpectedConditions.visibilityOf(account.mainText));
+        Assert.assertEquals(account.mainText.getText(), "ACCOUNT LOGOUT");
+        isLoggedIn = false;
+    }
+
+    @Test(dependsOnMethods = {"logoutUser"})
+    public void reSignUpSameUser() {
+
+        header = new Header.HeaderComponents(driver);
+        header.openLoginOrRegister();
+        waitFor().until(ExpectedConditions.urlContains("account/login"));
+        Assert.assertTrue(Objects.requireNonNull(driver.getCurrentUrl()).contains("account/login"));
+
+        signUp = new SignUp(driver);
+        signUp.openRegisterPage();
+
+        String[] countryState = signUp.registerNewUser(firstName, lastName, email, telephone,
+                fax, address1, company, address2, city, postalCode,
+                loginName, password, true
+        );
+        country = countryState[0];
+        state = countryState[1];
+
+        waitFor().until(ExpectedConditions.visibilityOf(signUp.errorMessage));
+        Assert.assertEquals(signUp.errorMessage.getText().trim().replace("×\n", ""),
+                "Error: E-Mail Address is already registered!");
     }
 }

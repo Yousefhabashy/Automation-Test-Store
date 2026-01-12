@@ -7,11 +7,32 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
+import java.util.List;
+import java.util.Random;
+
 public class SignUp extends PagesBase {
     public SignUp(WebDriver driver) {
         super(driver);
     }
 
+
+    // select
+    private static String getRandomChoice(WebElement selectElement) {
+        Select select = new Select(selectElement);
+        List<WebElement> options = select.getOptions();
+        options.removeIf( option ->
+                option.getText().trim().isEmpty()
+                        || option.getText().toLowerCase().contains("please select")
+        );
+        Random random = new Random();
+        WebElement randomOption = options.get(random.nextInt(options.size()));
+
+        select.selectByVisibleText(randomOption.getText());
+        return randomOption.getText();
+    }
+
+    @FindBy(css = "div.alert.alert-error.alert-danger")
+    public WebElement errorMessage;
     @FindBy(css = "[title='Continue'")
     WebElement registerButton;
     public void openRegisterPage() {
@@ -45,11 +66,11 @@ public class SignUp extends PagesBase {
     @FindBy(id = "AccountFrm_city")
     WebElement cityBox;
     @FindBy(id = "AccountFrm_zone_id")
-    WebElement stateSelect;
+    public WebElement stateSelect;
     @FindBy(id = "AccountFrm_postcode")
     WebElement postalCodeBox;
     @FindBy(id = "AccountFrm_country_id")
-    WebElement countrySelect;
+    public WebElement countrySelect;
     @FindBy(id = "AccountFrm_loginname")
     WebElement loginNameBox;
     @FindBy(id = "AccountFrm_password")
@@ -65,10 +86,10 @@ public class SignUp extends PagesBase {
     @FindBy(css = "button.btn.btn-orange.pull-right.lock-on-click")
     WebElement continueButton;
 
-    public void registerNewUser(String firstName, String lastName, String email,
+    public String[] registerNewUser(String firstName, String lastName, String email,
                                 String telephone, String fax, String address1, String company,
-                                String address2, String city, String state, String postalCode,
-                                String countryName, String loginName, String password , boolean subscribe) {
+                                String address2, String city, String postalCode,
+                                String loginName, String password , boolean subscribe) {
         setElementText(firstNameBox, firstName);
         setElementText(lastNameBox, lastName);
         setElementText(emailBox, email);
@@ -78,11 +99,9 @@ public class SignUp extends PagesBase {
         setElementText(address1Box, address1);
         setElementText(address2Box, address2);
         setElementText(cityBox, city);
-        Select selectState = new Select(stateSelect);
-        selectState.deSelectByContainsVisibleText(state);
+        String countryName = getRandomChoice(countrySelect);
         setElementText(postalCodeBox, postalCode);
-        Select selectCountry = new Select(countrySelect);
-        selectCountry.deSelectByContainsVisibleText(countryName);
+        String stateName = getRandomChoice(stateSelect);
         setElementText(loginNameBox, loginName);
         setElementText(passwordBox, password);
         setElementText(confirmPasswordBox, password);
@@ -93,25 +112,28 @@ public class SignUp extends PagesBase {
         }
         clickElementJS(acceptPolicy);
         clickElementJS(continueButton);
+        return new String[]{countryName, stateName};
     }
 
-    public void registerNewUser(String firstName, String lastName, String email,
-                                String address1, String city, String state, String postalCode,
-                                String countryName, String loginName, String password) {
+    public String[] registerNewUser(String firstName, String lastName, String email,
+                                String address1, String city, String postalCode,
+                                String loginName, String password) {
         setElementText(firstNameBox, firstName);
         setElementText(lastNameBox, lastName);
         setElementText(emailBox, email);
         setElementText(address1Box, address1);
         setElementText(cityBox, city);
-        Select selectState = new Select(stateSelect);
-        selectState.deSelectByContainsVisibleText(state);
+        String countryName = getRandomChoice(countrySelect);
         setElementText(postalCodeBox, postalCode);
-        Select selectCountry = new Select(countrySelect);
-        selectCountry.deSelectByContainsVisibleText(countryName);
+        String stateName = getRandomChoice(stateSelect);
         setElementText(loginNameBox, loginName);
         setElementText(passwordBox, password);
         setElementText(confirmPasswordBox, password);
         clickElementJS(acceptPolicy);
         clickElementJS(continueButton);
+        return new String[]{countryName, stateName};
     }
+
+    @FindBy(css = "span.maintext")
+    public WebElement successMessage;
 }

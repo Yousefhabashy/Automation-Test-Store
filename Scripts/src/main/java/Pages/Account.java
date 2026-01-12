@@ -17,6 +17,9 @@ public class Account extends PagesBase {
     @FindBy(css = "div.alert.alert-success")
     public WebElement successMessage;
 
+    @FindBy(css = "span.maintext")
+    public WebElement mainText;
+
     @FindBy(css = "ul.side_account_list")
     WebElement accountList;
     public void openAccountDashboard() {

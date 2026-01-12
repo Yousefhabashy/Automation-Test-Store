@@ -11,10 +11,7 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 import org.testng.ITestResult;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.Optional;
-import org.testng.annotations.Parameters;
+import org.testng.annotations.*;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -86,6 +83,10 @@ public class TestBase {
         }
     }
 
+    @AfterSuite
+    public void closeDriver() {
+        driver.quit();
+    }
 
     public static Wait<WebDriver> waitFor() {
 

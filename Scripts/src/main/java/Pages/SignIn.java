@@ -12,9 +12,9 @@ public class SignIn extends PagesBase {
     }
 
 
-    @FindBy(id = "AccountFrm_loginname")
+    @FindBy(id = "loginFrm_loginname")
     WebElement loginNameBox;
-    @FindBy(id = "AccountFrm_password")
+    @FindBy(id = "loginFrm_password")
     WebElement passwordBox;
     @FindBy(css = "[title='Login'")
     WebElement loginButton;
