@@ -1,6 +1,7 @@
 package Header;
 
 import Base.PagesBase;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -58,54 +59,38 @@ public class HeaderComponents extends PagesBase {
         clickElementJS(searchButton);
     }
 
-    // category menu
-    @FindBy(linkText = "HOME")
-    WebElement Home;
+    // category links
     public void selectHome() {
-        waitFor().until(ExpectedConditions.elementToBeClickable(Home));
-        clickElementJS(Home);
+        WebElement HomeLink = driver.findElement(By.xpath("//*[@id=\"categorymenu\"]/nav/ul/li[1]/a"));
+        clickElementJS(HomeLink);
     }
-    @FindBy(linkText = "APPAREL & ACCESSORIES")
-    WebElement ApparelAndAccessories;
     public void selectApparelAndAccessories() {
-        waitFor().until(ExpectedConditions.elementToBeClickable(ApparelAndAccessories));
-        clickElementJS(ApparelAndAccessories);
+        WebElement ApparelAndAccessoriesLink = driver.findElement(By.xpath("//*[@id=\"categorymenu\"]/nav/ul/li[2]/a"));
+        clickElementJS(ApparelAndAccessoriesLink);
     }
-    @FindBy(linkText = "  MAKEUP")
-    WebElement Makeup;
     public void selectMakeup() {
-        waitFor().until(ExpectedConditions.elementToBeClickable(Makeup));
-        clickElementJS(Makeup);
+        WebElement MakeupLink = driver.findElement(By.xpath("//*[@id=\"categorymenu\"]/nav/ul/li[3]/a"));
+        clickElementJS(MakeupLink);
     }
-    @FindBy(linkText = "  SKINCARE")
-    WebElement   Skincare;
     public void selectSkincare() {
-        waitFor().until(ExpectedConditions.elementToBeClickable(Skincare));
-        clickElementJS(Skincare);
+        WebElement skincareLink = driver.findElement(By.xpath("//*[@id=\"categorymenu\"]/nav/ul/li[4]/a"));
+        clickElementJS(skincareLink);
     }
-    @FindBy(linkText = "  FRAGRANCE")
-    WebElement   Fragrance;
     public void selectFragrance() {
-        waitFor().until(ExpectedConditions.elementToBeClickable(Fragrance));
-        clickElementJS(Fragrance);
+        WebElement fragranceLink = driver.findElement(By.xpath("//*[@id=\"categorymenu\"]/nav/ul/li[5]/a"));
+        clickElementJS(fragranceLink);
     }
-    @FindBy(linkText = "  HAIR CARE")
-    WebElement   HairCare;
     public void selectHairCare() {
-        waitFor().until(ExpectedConditions.elementToBeClickable(HairCare));
-        clickElementJS(HairCare);
+        WebElement HairCareLink = driver.findElement(By.xpath("//*[@id=\"categorymenu\"]/nav/ul/li[6]/a"));
+        clickElementJS(HairCareLink);
     }
-    @FindBy(linkText = "  MEN")
-    WebElement Men;
     public void selectMen() {
-        waitFor().until(ExpectedConditions.elementToBeClickable(Men));
-        clickElementJS(Men);
+        WebElement MenLink = driver.findElement(By.xpath("//*[@id=\"categorymenu\"]/nav/ul/li[7]/a"));
+        clickElementJS(MenLink);
     }
-    @FindBy(linkText = "  BOOKS")
-    WebElement Books;
     public void selectBooks() {
-        waitFor().until(ExpectedConditions.elementToBeClickable(Books));
-        clickElementJS(Books);
+        WebElement BooksLink = driver.findElement(By.xpath("//*[@id=\"categorymenu\"]/nav/ul/li[8]/a"));
+        clickElementJS(BooksLink);
     }
 
     // cart
