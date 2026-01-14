@@ -49,14 +49,61 @@ public class HeaderComponents extends PagesBase {
         clickElementJS(Checkout);
     }
 
+    // Search
     @FindBy(id = "filter_keyword")
     WebElement searchBar;
     @FindBy(css = "div.button-in-search")
     WebElement searchButton;
     public void searchProduct(String productName) {
+        waitFor().until(ExpectedConditions.visibilityOf(searchBar));
+        waitFor().until(ExpectedConditions.elementToBeClickable(searchBar));
         setElementText(searchBar, productName);
         waitFor().until(ExpectedConditions.elementToBeClickable(searchBar));
         clickElementJS(searchButton);
+    }
+
+    public void openSearchBar() {
+        searchBar.click();
+    }
+    @FindBy(id = "search-category")
+    WebElement searchCategory;
+    public void SelectAllCategories() {
+        WebElement allCategories = searchCategory.findElement(By.id("category_0"));
+        clickElementJS(allCategories);
+    }
+    public void SelectApparelAccessories() {
+        WebElement apparelAndAccessoriess = searchCategory.findElement(By.id("category_68"));
+        clickElementJS(apparelAndAccessoriess);
+    }
+    public void SelectMakeup() {
+        WebElement makeup = searchCategory.findElement(By.id("category_36"));
+        clickElementJS(makeup);
+    }
+    public void SelectSkincare() {
+        WebElement skincare = searchCategory.findElement(By.id("category_43"));
+        clickElementJS(skincare);
+    }
+    public void SelectFragrance() {
+        WebElement Fragrance = searchCategory.findElement(By.id("category_49"));
+        clickElementJS(Fragrance);
+    }
+    public void SelectMen() {
+        WebElement men = searchCategory.findElement(By.id("category_58"));
+        clickElementJS(men);
+    }
+    public void SelectHairCare() {
+        WebElement HairCare = searchCategory.findElement(By.id("category_52"));
+        clickElementJS(HairCare);
+    }
+    public void SelectBooks() {
+        WebElement books = searchCategory.findElement(By.id("category_65"));
+        clickElementJS(books);
+    }
+
+    public String getSelectedCategory() {
+        searchBar.click();
+        WebElement selectedCategory = driver.findElement(By.id("category_selected"));
+        return selectedCategory.getText();
     }
 
     // category links
