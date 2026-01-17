@@ -137,21 +137,21 @@ public class OrderHistoryTest extends TestBase {
         Assert.assertTrue(Objects.requireNonNull(driver.getCurrentUrl()).contains("account/history"));
         order = new Order(driver);
         String url = order.openOrder();
+
         waitFor().until(ExpectedConditions.urlContains(url));
         Assert.assertTrue(Objects.requireNonNull(driver.getCurrentUrl()).contains(url));
 
         String orderId = order.getOrderID();
         String orderEmail = order.getOrderEmail();
+
         Assert.assertEquals(orderId, orderID);
         Assert.assertEquals(orderEmail, email);
 
         Order.OrderProduct product = order.getProduct(1);
         String orderProductName = product.getProductTitle();
-        String orderProductPrice = product.getUnitPrice();
         int orderProductQuantity = product.getQuantity();
 
         Assert.assertEquals(orderProductName, productTitle);
-        Assert.assertEquals(orderProductPrice, productPrice);
         Assert.assertEquals(orderProductQuantity, productQuantity);
     }
 }

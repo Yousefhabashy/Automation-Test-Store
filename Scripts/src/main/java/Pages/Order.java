@@ -7,7 +7,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class Order extends PagesBase {
     public Order(WebDriver driver) {
@@ -16,25 +19,55 @@ public class Order extends PagesBase {
     @FindBy(id = "button_edit")
     WebElement orderPage;
     public String openOrder() {
-        String orderID = orderPage.getText();
         waitFor().until(ExpectedConditions.elementToBeClickable(orderPage));
+        String url = getOrderUrl();
         clickElementJS(orderPage);
-        return "order_id=" + orderID.replace("#", "");
+        return url;
+    }
+
+    private String getOrderUrl() {
+        WebElement orderIDDiv = driver.findElement(By.xpath("//*[@id=\"maincontainer\"]/div/div[1]/div/div/div[1]/div[1]"));
+        return "order_id=" + orderIDDiv.getText().replaceAll("[^0-9]", "");
     }
 
     @FindBy(css = "table.table.table-striped.table-bordered")
     WebElement orderDetailsContainer;
-    public String getOrderID() {
-        WebElement orderId = orderDetailsContainer.findElement(
-                By.xpath("//b[text()='Order ID']/following-sibling::text()[1]")
-        );
-        return orderId.getText().trim();
+
+    private Map<String, String> getOrderDetailsMap() {
+        Map<String, String> data = new HashMap<>();
+
+        WebElement td = orderDetailsContainer.findElements(By.tagName("td")).get(0);
+        String fullText = td.getText();
+
+        String[] lines = fullText.split("\n");
+
+        for (int i = 0; i < lines.length - 1; i++) {
+            String line = lines[i].trim();
+
+            if (line.equals("Order ID")) {
+                data.put("Order ID", lines[i + 1].trim());
+            }
+            if (line.equals("E-Mail")) {
+                data.put("E-Mail", lines[i + 1].trim());
+            }
+            if (line.equals("Status")) {
+                data.put("Status", lines[i + 1].trim());
+            }
+            if (line.equals("Shipping Method")) {
+                data.put("Shipping Method", lines[i + 1].trim());
+            }
+            if (line.equals("Payment Method")) {
+                data.put("Payment Method", lines[i + 1].trim());
+            }
+        }
+        return data;
     }
+    public String getOrderID() {
+        return getOrderDetailsMap().get("Order ID");
+    }
+
     public String getOrderEmail() {
-        WebElement email = orderDetailsContainer.findElement(
-                By.xpath("//b[text()='E-Mail']/following-sibling::text()[1]")
-        );
-        return email.getText().trim();
+        return getOrderDetailsMap().get("E-Mail");
     }
 
     @FindBy(css = "table.invoice_products.table.table-striped.table-bordered")
@@ -64,14 +97,14 @@ public class Order extends PagesBase {
             return product.findElement(By.cssSelector("td.align_left.valign_top a")).getText();
         }
         public int getQuantity() {
-            String value = product.findElements(By.tagName("td")).get(4).getText();
+            String value = product.findElements(By.tagName("td")).get(3).getText();
             return Integer.parseInt(value);
         }
         public String getUnitPrice() {
-            return product.findElements(By.tagName("td")).get(5).getText();
+            return product.findElements(By.tagName("td")).get(4).getText();
         }
         public String getTotalPrice() {
-            return product.findElements(By.tagName("td")).get(6).getText();
+            return product.findElements(By.tagName("td")).get(5).getText();
         }
     }
     @FindBy(css = "table.table.table-striped.table-bordered")
