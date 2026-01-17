@@ -15,9 +15,11 @@ public class Order extends PagesBase {
     }
     @FindBy(id = "button_edit")
     WebElement orderPage;
-    public void openOrder() {
+    public String openOrder() {
+        String orderID = orderPage.getText();
         waitFor().until(ExpectedConditions.elementToBeClickable(orderPage));
         clickElementJS(orderPage);
+        return "order_id=" + orderID.replace("#", "");
     }
 
     @FindBy(css = "table.table.table-striped.table-bordered")
