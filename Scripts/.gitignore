@@ -40,7 +40,6 @@ build/
 
 # ===== Selenium =====
 screenshots/
-downloads/
 
 # ===== Allure =====
 allure-results/
