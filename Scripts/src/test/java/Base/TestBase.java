@@ -13,6 +13,7 @@ import org.openqa.selenium.support.ui.Wait;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
 
+import java.io.File;
 import java.time.Duration;
 import java.util.HashMap;
 
@@ -20,14 +21,30 @@ public class TestBase {
 
     public static WebDriver driver;
     public static boolean isLoggedIn = false;
+    public static String downloadsPath;
+
+    static {
+        // Convert to absolute path
+        File downloadsDir = new File(System.getProperty("user.dir") + "/downloads");
+        downloadsPath = downloadsDir.getAbsolutePath();
+
+        // Create the folder if it doesn't exist
+        if (!downloadsDir.exists()) {
+            downloadsDir.mkdirs();
+        }
+    }
+
 
     public static ChromeOptions chromeOptions() {
+
         ChromeOptions options = new ChromeOptions();
         HashMap<String, Object> chromePrefs = new HashMap<String, Object>();
 
         chromePrefs.put("autofill.address_enabled", false);
         chromePrefs.put("autofill.credit_card_enabled", false);
         chromePrefs.put("profile.default_content_settings.popups", 0);
+        chromePrefs.put("download.default_directory", downloadsPath);
+        chromePrefs.put("download.prompt_for_download", false);
         chromePrefs.put("safebrowsing.enabled", "false");
         options.setExperimentalOption("prefs", chromePrefs);
         options.setAcceptInsecureCerts(true);
@@ -35,13 +52,18 @@ public class TestBase {
         return options;
     }
 
-
     public static FirefoxOptions firefoxOptions() {
+
         FirefoxOptions options = new FirefoxOptions();
 
         options.addPreference("extensions.formautofill.addresses.enabled", false);
         options.addPreference("extensions.formautofill.creditCards.enabled", false);
         options.addPreference("browser.formfill.enable", false);
+        options.addPreference("browser.download.folderList", 2);
+        options.addPreference("browser.download.dir", downloadsPath);
+        options.addPreference("browser.helperApps.neverAsk.saveToDisk",
+                "application/pdf,application/octet-stream");
+        options.addPreference("browser.download.manager.showWhenStarting", false);
         options.addPreference("pdfjs.disabled", true);
         options.setAcceptInsecureCerts(true);
 
