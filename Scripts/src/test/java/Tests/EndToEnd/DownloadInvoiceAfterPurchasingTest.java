@@ -15,7 +15,6 @@ public class DownloadInvoiceAfterPurchasingTest extends TestBase {
 
     HeaderComponents header;
     SignUp signUp;
-    SignIn signIn;
     Home home;
     Product product;
     Cart cart;

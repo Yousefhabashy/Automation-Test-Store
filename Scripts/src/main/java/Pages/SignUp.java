@@ -33,7 +33,7 @@ public class SignUp extends PagesBase {
 
     @FindBy(css = "div.alert.alert-error.alert-danger")
     public WebElement errorMessage;
-    @FindBy(css = "[title='Continue'")
+    @FindBy(css = "[title='Continue']")
     WebElement registerButton;
     public void openRegisterPage() {
         waitFor().until(ExpectedConditions.visibilityOf(registerButton));
