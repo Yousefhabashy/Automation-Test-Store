@@ -14,7 +14,6 @@ import java.util.Objects;
 public class GuestCheckoutTest extends TestBase {
 
     HeaderComponents header;
-    SignUp signUp;
     Home home;
     Product product;
     Cart cart;
