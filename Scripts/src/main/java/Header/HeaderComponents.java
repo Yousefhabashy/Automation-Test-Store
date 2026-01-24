@@ -150,22 +150,44 @@ public class HeaderComponents extends PagesBase {
     }
 
     // currency
-    @FindBy(css = "a.dropdown-toggle")
-    WebElement CurrentCurrency;
-    @FindBy(linkText = "€ EURO")
-    WebElement Euro;
-    @FindBy(linkText = "£ POUND STERLING")
-    WebElement PoundSterling;
-    @FindBy(linkText = "$ US DOLLAR")
-    WebElement USDollar;
+    @FindBy(css = "ul.nav.language a.dropdown-toggle span")
+    private WebElement currentCurrencyDisplay;
+
+    @FindBy(css = "ul.nav.language a.dropdown-toggle")
+    private WebElement currencyDropdownToggle;
+
+    @FindBy(css = "ul.dropdown-menu.currency a[href*='currency=EUR']")
+    private WebElement euroOption;
+
+    @FindBy(css = "ul.dropdown-menu.currency a[href*='currency=GBP']")
+    private WebElement poundOption;
+
+    @FindBy(css = "ul.dropdown-menu.currency a[href*='currency=USD']")
+    private WebElement dollarOption;
+
+    @FindBy(css = "ul.dropdown-menu.currency")
+    private WebElement currencyDropdownMenu;
+
+
+    public String getCurrentCurrency() {
+        return currentCurrencyDisplay.getText().trim();
+    }
 
     public void selectEuro() {
-        actions.moveToElement(CurrentCurrency).moveToElement(Euro).click().perform();
+        currencyDropdownToggle.click();
+        waitFor().until(ExpectedConditions.visibilityOf(currencyDropdownMenu));
+        euroOption.click();
     }
-    public void selectPoundSterling() {
-        actions.moveToElement(CurrentCurrency).moveToElement(PoundSterling).click().perform();
+
+    public void selectPound() {
+        currencyDropdownToggle.click();
+        waitFor().until(ExpectedConditions.visibilityOf(currencyDropdownMenu));
+        poundOption.click();
     }
-    public void selectUSDollar() {
-        actions.moveToElement(CurrentCurrency).moveToElement(USDollar).click().perform();
+
+    public void selectDollar() {
+        currencyDropdownToggle.click();
+        waitFor().until(ExpectedConditions.visibilityOf(currencyDropdownMenu));
+        dollarOption.click();
     }
 }
