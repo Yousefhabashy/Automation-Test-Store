@@ -67,4 +67,7 @@ public class TestData {
     public static String generateReview() {
         return faker.lorem().sentence(18);
     }
+    public static String generateRate() {
+        return faker.lorem().paragraph(6);
+    }
 }

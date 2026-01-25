@@ -2,9 +2,11 @@ package Pages;
 
 import Base.PagesBase;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
@@ -279,5 +281,13 @@ public class Account extends PagesBase {
         WebElement logout = accountList.findElements(By.tagName("li")).getLast();
         WebElement logoutLink = logout.findElement(By.tagName("a"));
         clickElementJS(logoutLink);
+    }
+
+    @FindBy(linkText = "Contact Us")
+    WebElement contact;
+    public void openContactUs() {
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", contact);
+        waitFor().until(ExpectedConditions.elementToBeClickable(contact));
+        clickElementJS(contact);
     }
 }
