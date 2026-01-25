@@ -45,6 +45,7 @@ public class CompleteJourneyTest extends TestBase {
     String postalCode = TestData.generatePostalCode();
     String loginName = TestData.generateLoginName(firstName, lastName);
     String password = TestData.generatePassword();
+    String newPassword = TestData.generatePassword();
 
     @Test(priority = 1)
     public void signUpUser() {
@@ -72,12 +73,25 @@ public class CompleteJourneyTest extends TestBase {
     }
 
     @Test(dependsOnMethods = {"signUpUser"})
-    public void logoutUser() {
+    public void changePassword() {
 
-        header = new HeaderComponents(driver);
-        header.openAccount();
+        account = new Account(driver);
+
+        account.openChangePassword();
+        waitFor().until(ExpectedConditions.urlContains("account/password"));
+        Assert.assertTrue(Objects.requireNonNull(driver.getCurrentUrl()).contains("account/password"));
+
+        account.changePassword(password, newPassword);
         waitFor().until(ExpectedConditions.urlContains("account/account"));
         Assert.assertTrue(Objects.requireNonNull(driver.getCurrentUrl()).contains("account/account"));
+
+        waitFor().until(ExpectedConditions.visibilityOf(account.successMessage));
+        Assert.assertEquals(account.successMessage.getText(), "×\n" +
+                "Success: Your password has been successfully updated.");
+    }
+
+    @Test(dependsOnMethods = {"changePassword"})
+    public void logoutUser() {
 
         account = new Account(driver);
         account.logoutUser();
@@ -87,7 +101,7 @@ public class CompleteJourneyTest extends TestBase {
     }
 
     @Test(dependsOnMethods = {"logoutUser"})
-    public void  loginUser() {
+    public void loginUserWithNewPassword() {
         header = new HeaderComponents(driver);
         header.openLoginOrRegister();
 
@@ -95,14 +109,14 @@ public class CompleteJourneyTest extends TestBase {
         Assert.assertTrue(Objects.requireNonNull(driver.getCurrentUrl()).contains("account/login"));
 
         signIn = new SignIn(driver);
-        signIn.loginUser(loginName, password);
+        signIn.loginUser(loginName, newPassword);
 
         waitFor().until(ExpectedConditions.urlContains("account/account"));
         Assert.assertTrue(Objects.requireNonNull(driver.getCurrentUrl()).contains("account/account"));
         isLoggedIn = true;
     }
 
-    @Test(dependsOnMethods = {"loginUser"})
+    @Test(dependsOnMethods = {"loginUserWithNewPassword"})
     public void openProductPage() {
 
         header = new HeaderComponents(driver);

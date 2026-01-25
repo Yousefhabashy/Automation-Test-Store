@@ -126,13 +126,13 @@ public class Account extends PagesBase {
         WebElement changePasswordLink = changePassword.findElement(By.tagName("a"));
         clickElementJS(changePasswordLink);
     }
-    @FindBy(id = "")
+    @FindBy(id = "PasswordFrm_current_password")
     WebElement currentPasswordBox;
-    @FindBy(id = "")
+    @FindBy(id = "PasswordFrm_password")
     WebElement newPasswordBox;
-    @FindBy(id = "")
+    @FindBy(id = "PasswordFrm_confirm")
     WebElement confirmNewPasswordBox;
-    @FindBy(css = "a[title='Continue']")
+    @FindBy(css = "button.btn.btn-orange.pull-right")
     WebElement changePassword;
     public void changePassword(String oldPassword, String newPassword) {
         setElementText(currentPasswordBox, oldPassword);

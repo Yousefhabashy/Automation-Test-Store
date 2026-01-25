@@ -1,5 +1,7 @@
 package Base;
 
+import Header.HeaderComponents;
+import Pages.Account;
 import Utils.ScreenshotUtils;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -8,14 +10,17 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
+import org.testng.Assert;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
 
 import java.io.File;
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class TestBase {
 
@@ -110,6 +115,31 @@ public class TestBase {
         driver.quit();
     }
 
+    public void tryLogout() {
+
+        try {
+
+            HeaderComponents header = new HeaderComponents(driver);
+            header.openAccount();
+            waitFor().until(ExpectedConditions.urlContains("account/account"));
+            Assert.assertTrue(Objects.requireNonNull(driver.getCurrentUrl()).contains("account/account"));
+
+            Account account = new Account(driver);
+            account.logoutUser();
+            waitFor().until(ExpectedConditions.visibilityOf(account.mainText));
+            Assert.assertEquals(account.mainText.getText(), "ACCOUNT LOGOUT");
+            isLoggedIn = false;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @AfterClass(alwaysRun = true)
+    public void teardown() {
+        if(isLoggedIn) {
+            tryLogout();
+        }
+    }
     public static Wait<WebDriver> waitFor() {
 
         return new FluentWait<>(driver)
